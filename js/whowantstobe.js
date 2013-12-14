@@ -70,12 +70,12 @@ Game.prototype.parseQuestions = function () {
 };
 
 Game.prototype.newGame = function () {
-    if(!confirm("Are you sure you want to start a new game?")) return;
-
-    this.difficulty = 0;
-    this.isGameOver = false;
-    
-    this.nextQuestion(false); 
+    if(confirm("Are you sure you want to start a new game?")) {
+        this.difficulty = 0;
+        this.isGameOver = false;
+        
+        this.nextQuestion(false);
+    }
 };
 
 Game.prototype.gameOver = function () {
