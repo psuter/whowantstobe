@@ -1,0 +1,166 @@
+body {
+    background-color: black;
+    font-family: Arial, Helvetica, Sans-serif;
+    color: white;
+    margin: 0px;
+    padding: 0px;
+}
+
+div {
+  /* debugging purposes */
+  border: none;
+  display: block;
+  padding: 0px;
+}
+
+p.answer {
+  position: relative;
+  left: 10px;
+}
+
+.orange {
+  color: orange;
+}
+
+.textoption {
+
+}
+
+.smalltextoption {
+    font-size: 15px;
+}
+
+div#content {
+  background-image: url('images/whowantstobe-background.png'); 
+  z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 900px;
+  height: 550px;
+}
+
+div#overgrid {
+  background-image: url('images/whowantstobe-grid.png');
+  z-index: 3;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 900px;
+  height: 550px;
+}
+
+
+div#question {
+    position: relative;
+    top: 40px;
+    height: 190px;
+    min-height: 190px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 550px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 30px;
+    display: table;
+}
+
+div#questionbody {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+div#option1 {
+    background-image: url('images/whowantstobe-losange-black.png'); 
+    z-index: 2;
+    width: 378px;
+    height: 91px;
+    position: relative;
+    text-align: left;
+    float: left;
+    top: 147px;
+    left: 62px;
+    font-size: 20px;
+    margin-bottom: 10px;
+    display: table;
+    vertical-align: middle;
+}
+
+div#option2 {
+    background-image: url('images/whowantstobe-losange-black.png'); 
+    z-index: 2;
+    width: 378px;
+    height: 91px;
+    position: relative;
+    text-align: left;
+    float: right;
+    top: 147px;
+    right: 60px;
+    font-size: 20px;
+    margin-bottom: 10px;
+    display: table;
+    vertical-align: middle;
+}
+
+div#option3 {
+    background-image: url('images/whowantstobe-losange-black.png'); 
+    z-index: 2;
+    width: 378px;
+    height: 91px;
+    position: relative;
+    text-align: left;
+    float: left;
+    top: 147px;
+    left: 62px;
+    font-size: 20px;
+    display: table;
+    vertical-align: middle;
+}
+
+div#option4 {
+    background-image: url('images/whowantstobe-losange-black.png'); 
+    z-index: 2;
+    width: 378px;
+    height: 91px;
+    position: relative;
+    text-align: left;
+    float: right;
+    top: 147px;
+    right: 60px;
+    font-size: 20px;
+    display: table;
+    vertical-align: middle;
+}
+
+div.optioncontent {
+    padding-left: 35px;
+    padding-right: 40px;
+    display: table-cell;
+    vertical-align: middle;
+    visibility: hidden;
+}
+
+div.actionlink {
+    display : inline;
+    color : inherit;
+    text-decoration : none;
+}
+
+div.actionlink:hover {
+    text-decoration : underline;
+}
+
+div#navigation {
+    color: 333333;
+    position: absolute;
+    top: 580px;
+    left: 10px;
+    width: 900px;
+    min-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}

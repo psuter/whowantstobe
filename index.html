@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Who Wants to Be...</title>
+        <link rel="stylesheet" href="style.css" />
+        <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="js/whowantstobe.js"></script>
+    </head>
+    <body>
+        <div id="overgrid">&nbsp;</div>
+        <div id="content">
+            <div id="question">
+                <div id="questionbody">
+                    <p id="questiontext"></p>
+                </div>
+            </div>
+            <div id="option1">
+                <div id="optioncontent1" class="optioncontent">
+                    <p class="answer">
+                        <span class="orange">&bull; A : </span>
+                        <span class="textoption" id="option1text"></span>
+                    </p>
+                </div>
+            </div>
+            <div id="option2">
+                <div id="optioncontent2" class="optioncontent">
+                    <p class="answer">
+                        <span class="orange">&bull; B : </span>
+                        <span class="textoption" id="option2text"></span>
+                    </p>
+                </div>
+            </div>
+            <div id="option3">
+                <div id="optioncontent3" class="optioncontent">
+                    <p class="answer">
+                        <span class="orange">&bull; C : </span>
+                        <span class="textoption" id="option3text"></span>
+                    </p>
+                </div>
+            </div>
+            <div id="option4">
+                <div id="optioncontent4" class="optioncontent">
+                    <p class="answer">
+                        <span class="orange">&bull; D : </span>
+                        <span class="textoption" id="option4text"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="navigation">
+            <div class="actionlink" id="newgamelink"><u>n</u>ew game</div> |
+            <div class="actionlink" id="uncoverlink"><u>u</u>ncover</div> |
+            <div class="actionlink" id="fiftyfiftylink">50-50</div> |
+            <div class="actionlink" id="reveallink"><u>r</u>eveal</div> |
+            <div class="actionlink" id="proceedlink"><u>p</u>roceed</div> |
+            <div class="actionlink" id="skiplink"><u>s</u>kip</div> |
+            <div class="actionlink" id="selectalink"><u>A</u></div> |
+            <div class="actionlink" id="selectblink"><u>B</u></div> |
+            <div class="actionlink" id="selectclink"><u>C</u></div> |
+            <div class="actionlink" id="selectdlink"><u>D</u></div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                var game = new Game("questions");
+
+                $(document).keydown(function (event) {
+                    switch (event.which) {
+                        case 65: game.select(1); break;           // A
+                        case 66: game.select(2); break;           // B
+                        case 67: game.select(3); break;           // C
+                        case 68: game.select(4); break;           // D
+                        case 70: game.fiftyFifty(); break;        // F
+                        case 78: game.newGame();                  // N
+                        case 80: game.nextQuestion(true); break;  // P
+                        case 82: game.reveal(); break;            // R
+                        case 83: game.nextQuestion(false); break; // S
+                        case 85: game.uncoverNext(); break;       // U
+                        default: break;
+                    }
+                });
+
+                $("#newgamelink").click(function () {
+                    game.newGame();
+                });
+
+                $("#reveallink").click(function () {
+                    game.reveal();
+                });
+
+                $("#uncoverlink").click(function () {
+                    game.uncoverNext();
+                });
+
+                $("#proceedlink").click(function () {
+                    game.nextQuestion(true);
+                });
+
+                $("#skiplink").click(function () {
+                    game.nextQuestion(false);
+                });
+
+                $("#fiftyfiftylink").click(function () {
+                    game.fiftyFifty();
+                });
+
+                $("#selectalink").click(function () {
+                    game.select(1);
+                });
+
+                $("#selectblink").click(function () {
+                    game.select(2);
+                });
+
+                $("#selectclink").click(function () {
+                    game.select(3);
+                });
+
+                $("#selectdlink").click(function () {
+                    game.select(4);
+                });
+
+                game.ready(function () {
+                    game.loadQuestion();
+                });
+            });
+        </script>
+    </body>
+</html>
