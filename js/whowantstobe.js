@@ -20,12 +20,12 @@ function Game(questionFile) {
     this.currentQuestion   = undefined;
     this.fiftyFiftied      = false;
 
-    this.gameOver();
+    this.gameOver("Ready!");
     this.parseQuestions();
 };
 
 Game.prototype.ready = function (closure) {
-    if(this.isReady) {
+    if (this.isReady) {
         closure();
     } else {
         this.readyClosures.push(closure);
@@ -37,7 +37,7 @@ Game.prototype.flushReady = function () {
 
     this.isReady = true;
 
-    for(i = 0; i < this.readyClosures.length; i = i + 1) {
+    for (i = 0; i < this.readyClosures.length; i = i + 1) {
         this.readyClosures[i]();
     }
 
@@ -52,11 +52,11 @@ Game.prototype.parseQuestions = function () {
     $.get(this.questionFile, function (content) {
         lines = content.split("\n");
 
-        for(i in lines) {
+        for (i in lines) {
             line = $.trim(lines[i]);
             parts = line.split("::");
 
-            if(parts.length === 7) {
+            if (parts.length === 7) {
                 q = new Question(
                     $.trim(parts[1]),
                     1 * $.trim(parts[0]),
@@ -77,7 +77,7 @@ Game.prototype.parseQuestions = function () {
 };
 
 Game.prototype.newGame = function () {
-    if(confirm("Are you sure you want to start a new game?")) {
+    if (confirm("Are you sure you want to start a new game?")) {
         this.difficulty = 0;
         this.isGameOver = false;
         
@@ -85,31 +85,48 @@ Game.prototype.newGame = function () {
     }
 };
 
-Game.prototype.gameOver = function () {
+Game.prototype.gameOver = function (message) {
     this.isGameOver = true;
-    $("#questiontext").text("Game over !");
-    for(i = 1; i <= 4; i += 1) {
+    $("#questiontext").text(message);
+    for (i = 1; i <= 4; i += 1) {
         $("#optioncontent" + i).css("visibility", "hidden");
         $("#option" + i).css("background-image", "url('images/whowantstobe-losange-black.png')");
     }
 };
 
 Game.prototype.nextQuestion = function (increaseDifficulty) {
-    if(increaseDifficulty) {
+    if (increaseDifficulty) {
         this.difficulty += 1;
     }
 
-    if(this.difficulty > 5) {
-        this.gameOver();
+    if (this.difficulty > 5) {
+        this.gameOver("Game over!");
     } else {
         this.loadQuestion(-1);
     }
 };
 
+Game.prototype.checkQuestionAvailability = function (difficulty) {
+    var i;
+
+    for (i = 0; i < this.questions.length; i += 1) {
+        if (this.questions[i].difficulty === difficulty && !this.used[i]) {
+            return true;
+        }
+    }
+
+    return false;
+};
+
 Game.prototype.loadQuestion = function (qid) {
-    if(!this.isReady || this.isGameOver) return;
+    if (!this.isReady || this.isGameOver) return;
 
     var i;
+
+    if (!this.checkQuestionAvailability(this.difficulty)) {
+        this.gameOver("Out of questions of difficulty " + this.difficulty + " :(");
+        return;
+    }
     
     if (qid === -1) {
         do {
@@ -124,7 +141,7 @@ Game.prototype.loadQuestion = function (qid) {
     this.currentQuestion = this.questions[i];
     this.fiftyFiftied = false;
 
-    if(this.currentQuestion.question.endsWith(".jpg") ||
+    if (this.currentQuestion.question.endsWith(".jpg") ||
        this.currentQuestion.question.endsWith(".jpg") ||
        this.currentQuestion.question.endsWith(".jpeg")) {
 
@@ -137,7 +154,7 @@ Game.prototype.loadQuestion = function (qid) {
             $("#questionpicture").css("background-position", "center");
 
             var r = img.width / img.height;
-            if(r > (720 / 320)) {
+            if (r > (720 / 320)) {
                 $("#questionpicture").css("background-size", "auto 100%");
             } else {
                 $("#questionpicture").css("background-size", "100% auto");
@@ -151,8 +168,8 @@ Game.prototype.loadQuestion = function (qid) {
         $("#questionpicture").css("visibility", "hidden");
     }
 
-    for(i = 1; i <= 4; i += 1) {
-        if(this.currentQuestion.answers[i-1].length > 50) {
+    for (i = 1; i <= 4; i += 1) {
+        if (this.currentQuestion.answers[i-1].length > 50) {
             $("#option" + i + "text").attr("class", "smalltextoption");
         } else {
             $("#option" + i + "text").attr("class", "textoption");
@@ -166,9 +183,9 @@ Game.prototype.loadQuestion = function (qid) {
 };
 
 Game.prototype.uncoverNext = function () {
-    if(!this.isReady || this.isGameOver) return;
+    if (!this.isReady || this.isGameOver) return;
 
-    if(this.uncoveredCount >= 0 && this.uncoveredCount < 4) {
+    if (this.uncoveredCount >= 0 && this.uncoveredCount < 4) {
         $("#optioncontent" + (this.uncoveredCount + 1)).css("visibility", "visible");
         this.uncoveredCount += 1;
     }
@@ -176,22 +193,22 @@ Game.prototype.uncoverNext = function () {
 
 Game.prototype.uncoverAll = function () {
     var i;
-    if(!this.isReady || this.currentQuestion === undefined || this.isGameOver) return;
+    if (!this.isReady || this.currentQuestion === undefined || this.isGameOver) return;
 
-    if(this.fiftyFiftied) return;
+    if (this.fiftyFiftied) return;
 
-    for(i = this.uncoveredCount; i < 4; i += 1) {
+    for (i = this.uncoveredCount; i < 4; i += 1) {
         this.uncoverNext();
     }
 }
 
 Game.prototype.select = function (answerID) { // answerID is 1-indexed
     var i;
-    if(!this.isReady || this.currentQuestion === undefined || this.isGameOver) return;
+    if (!this.isReady || this.currentQuestion === undefined || this.isGameOver) return;
     this.uncoverAll();
 
-    for(i = 1; i <= 4; i += 1) {
-        if(i === answerID) {
+    for (i = 1; i <= 4; i += 1) {
+        if (i === answerID) {
             $("#option" + i).css("background-image", "url('images/whowantstobe-losange-orange.png')");
         } else {
             $("#option" + i).css("background-image", "url('images/whowantstobe-losange-black.png')");
@@ -201,7 +218,7 @@ Game.prototype.select = function (answerID) { // answerID is 1-indexed
 
 Game.prototype.reveal = function () {
     var c;
-    if(!this.isReady || this.currentQuestion === undefined || this.isGameOver) return;
+    if (!this.isReady || this.currentQuestion === undefined || this.isGameOver) return;
     this.uncoverAll();
     c = this.currentQuestion.solution + 1;
     $("#option" + c).css("background-image", "url('images/whowantstobe-losange-green.png')");
@@ -210,7 +227,7 @@ Game.prototype.reveal = function () {
 Game.prototype.fiftyFifty = function () {
     var c, fst, snd;
 
-    if(!this.isReady || this.currentQuestion === undefined || this.fiftyFiftied) return;
+    if (!this.isReady || this.currentQuestion === undefined || this.fiftyFiftied) return;
 
     c = this.currentQuestion.solution;
 
