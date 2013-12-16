@@ -102,11 +102,11 @@ Game.prototype.nextQuestion = function (increaseDifficulty) {
     if(this.difficulty > 5) {
         this.gameOver();
     } else {
-        this.loadQuestion();
+        this.loadQuestion(-1);
     }
 };
 
-Game.prototype.loadQuestion = function (qid = -1) {
+Game.prototype.loadQuestion = function (qid) {
     if(!this.isReady || this.isGameOver) return;
 
     var i;
