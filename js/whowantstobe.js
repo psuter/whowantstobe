@@ -1,3 +1,10 @@
+// Pimp my lib.
+if (typeof String.prototype.endsWith !== 'function') {
+    String.prototype.endsWith = function(suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+}
+
 function Game(questionFile) {
     this.questionFile = questionFile;
 
@@ -99,21 +106,50 @@ Game.prototype.nextQuestion = function (increaseDifficulty) {
     }
 };
 
-Game.prototype.loadQuestion = function () {
+Game.prototype.loadQuestion = function (qid = -1) {
     if(!this.isReady || this.isGameOver) return;
 
     var i;
     
-    do {
-        i = 1 * Math.floor(Math.random() * this.questions.length);
-    } while(this.used[i] || this.questions[i].difficulty !== this.difficulty);
+    if (qid === -1) {
+        do {
+            i = 1 * Math.floor(Math.random() * this.questions.length);
+        } while(this.used[i] || this.questions[i].difficulty !== this.difficulty);
+    } else {
+        i = qid;
+    }
 
     this.used[i] = true;
 
     this.currentQuestion = this.questions[i];
     this.fiftyFiftied = false;
 
-    $("#questiontext").html(this.currentQuestion.question);
+    if(this.currentQuestion.question.endsWith(".jpg") ||
+       this.currentQuestion.question.endsWith(".jpg") ||
+       this.currentQuestion.question.endsWith(".jpeg")) {
+
+        $("#questiontext").html();
+        var img = new Image();
+        img.src = this.currentQuestion.question;
+
+        $(img).load(function () {
+            $("#questionpicture").css("background-image", "url('" + img.src + "')");
+            $("#questionpicture").css("background-position", "center");
+
+            var r = img.width / img.height;
+            if(r > (720 / 320)) {
+                $("#questionpicture").css("background-size", "auto 100%");
+            } else {
+                $("#questionpicture").css("background-size", "100% auto");
+            }
+
+            $("#questionpicture").css("visibility", "visible");
+        });
+
+    } else {
+        $("#questiontext").html(this.currentQuestion.question);
+        $("#questionpicture").css("visibility", "hidden");
+    }
 
     for(i = 1; i <= 4; i += 1) {
         if(this.currentQuestion.answers[i-1].length > 50) {

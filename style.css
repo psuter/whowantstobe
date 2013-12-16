@@ -54,6 +54,16 @@ div#overgrid {
   height: 550px;
 }
 
+div#questionpicture {
+    position : absolute;
+    z-index : 4;
+    width : 720px;
+    left : 100px;
+    height : 320px;
+    top : 20px;
+    visibility : hidden;
+}
+
 
 div#question {
     position: relative;

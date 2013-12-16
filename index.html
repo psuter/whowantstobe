@@ -8,6 +8,7 @@
         <script type="text/javascript" src="js/whowantstobe.js"></script>
     </head>
     <body>
+        <div id="questionpicture"></div>
         <div id="overgrid">&nbsp;</div>
         <div id="content">
             <div id="question">
@@ -58,7 +59,8 @@
             <div class="actionlink" id="selectalink"><u>A</u></div> |
             <div class="actionlink" id="selectblink"><u>B</u></div> |
             <div class="actionlink" id="selectclink"><u>C</u></div> |
-            <div class="actionlink" id="selectdlink"><u>D</u></div>
+            <div class="actionlink" id="selectdlink"><u>D</u></div> |
+            <div class="actionlink" id="customlink">custom</div>
         </div>
         <script>
             $(document).ready(function () {
@@ -118,6 +120,11 @@
 
                 $("#selectdlink").click(function () {
                     game.select(4);
+                });
+
+                $("#customlink").click(function () {
+                    var qid = prompt("Enter question id (0-indexed).", "-1");
+                    game.loadQuestion(qid * 1);
                 });
 
                 game.ready(function () {
